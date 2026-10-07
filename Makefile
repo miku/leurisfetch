@@ -8,12 +8,12 @@ leurisfetch: main.go go.mod go.sum
 	go build -o $@ .
 
 # Data files only need the binary to exist (order-only), so a rebuild does not
-# trigger a refetch; write to a tmp file, so a failed run leaves no partial file.
+# trigger a refetch; a failed run leaves a tmp file, which the next run resumes.
 publications.jsonl: | leurisfetch
-	./leurisfetch -v -k publications > $@.tmp && mv $@.tmp $@
+	./leurisfetch -v -k publications -R $@.tmp && mv $@.tmp $@
 
 projects.jsonl: | leurisfetch
-	./leurisfetch -v -k projects > $@.tmp && mv $@.tmp $@
+	./leurisfetch -v -k projects -R $@.tmp && mv $@.tmp $@
 
 .PHONY: data
 data: publications.jsonl projects.jsonl

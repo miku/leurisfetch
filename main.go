@@ -142,6 +142,7 @@ var (
 	sleep     = flag.DurationP("sleep", "w", 500*time.Millisecond, "pause between requests")
 	timeout   = flag.DurationP("timeout", "t", 60*time.Second, "http timeout per request")
 	retries   = flag.IntP("retries", "r", 3, "attempts per page")
+	resume    = flag.StringP("resume", "R", "", "append to this file instead of stdout, continuing an interrupted fetch")
 	verbose   = flag.BoolP("verbose", "v", false, "log progress to stderr")
 	userAgent = "leurisfetch/0.1 (+https://github.com/miku/leurisfetch)"
 )
@@ -199,6 +200,54 @@ func fetchPageRetry(client *http.Client, k kind, vars map[string]any) (p *page, 
 	return nil, err
 }
 
+// entryID returns the id of a single JSON entry.
+func entryID(b []byte) (string, error) {
+	var v struct {
+		ID string `json:"_id"`
+	}
+	err := json.Unmarshal(b, &v)
+	return v.ID, err
+}
+
+// openResume opens path for appending, creating it if necessary. It drops a
+// trailing incomplete line, as left by an interrupted run, and returns the ids
+// of all entries already in the file.
+func openResume(path string) (*os.File, map[string]bool, error) {
+	f, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0644)
+	if err != nil {
+		return nil, nil, err
+	}
+	var (
+		seen   = make(map[string]bool)
+		br     = bufio.NewReader(f)
+		offset int64
+	)
+	for {
+		b, err := br.ReadBytes('\n')
+		if err == io.EOF {
+			break // b holds an incomplete line, if any
+		}
+		if err != nil {
+			f.Close()
+			return nil, nil, err
+		}
+		id, err := entryID(b)
+		if err != nil {
+			f.Close()
+			return nil, nil, fmt.Errorf("%s: line at offset %d: %w", path, offset, err)
+		}
+		if id != "" {
+			seen[id] = true
+		}
+		offset += int64(len(b))
+	}
+	if err := f.Truncate(offset); err != nil {
+		f.Close()
+		return nil, nil, err
+	}
+	return f, seen, nil
+}
+
 func main() {
 	flag.Usage = func() {
 		fmt.Fprintf(os.Stderr, "usage: leurisfetch [flags] > out.jsonl\n\n")
@@ -210,11 +259,29 @@ func main() {
 		log.Fatalf("unknown kind %q, want publications or projects", *kindName)
 	}
 	var (
+		out   = os.Stdout
+		seen  = make(map[string]bool) // also drops duplicates from shifting pages
+		start = 1
+	)
+	if *resume != "" {
+		f, ids, err := openResume(*resume)
+		if err != nil {
+			log.Fatal(err)
+		}
+		out, seen = f, ids
+		// Entries may have shifted since the last run, so start a page early;
+		// entries already in the file get skipped anyway.
+		start = max(1, len(seen) / *pageSize)
+		if *verbose {
+			log.Printf("resuming %s with %d entries at page %d", *resume, len(seen), start)
+		}
+	}
+	var (
 		client = &http.Client{Timeout: *timeout}
-		bw     = bufio.NewWriter(os.Stdout)
+		bw     = bufio.NewWriter(out)
 		buf    bytes.Buffer
 	)
-	for i := 1; ; i++ {
+	for i := start; ; i++ {
 		p, err := fetchPageRetry(client, k, map[string]any{
 			"id":        *unit,
 			"pageSize":  *pageSize,
@@ -223,10 +290,18 @@ func main() {
 			"sortField": k.sortField,
 		})
 		if err != nil {
-			bw.Flush()
 			log.Fatal(err)
 		}
+		var added int
 		for _, e := range p.Entries {
+			id, err := entryID(e)
+			if err != nil {
+				log.Fatal(err)
+			}
+			if id != "" && seen[id] {
+				continue
+			}
+			seen[id] = true
 			buf.Reset()
 			if err := json.Compact(&buf, e); err != nil {
 				log.Fatal(err)
@@ -235,16 +310,21 @@ func main() {
 			if _, err := bw.Write(buf.Bytes()); err != nil {
 				log.Fatal(err)
 			}
+			added++
+		}
+		// Flush per page, so an interrupted run loses at most the current page.
+		if err := bw.Flush(); err != nil {
+			log.Fatal(err)
 		}
 		if *verbose {
-			log.Printf("page %d/%d, %d entries total", i, p.Meta.TotalPages, p.Meta.TotalEntries)
+			log.Printf("page %d/%d, %d new, %d entries total", i, p.Meta.TotalPages, added, p.Meta.TotalEntries)
 		}
-		if len(p.Entries) == 0 || i >= p.Meta.TotalPages || (*maxPages > 0 && i >= *maxPages) {
+		if len(p.Entries) == 0 || i >= p.Meta.TotalPages || (*maxPages > 0 && i-start+1 >= *maxPages) {
 			break
 		}
 		time.Sleep(*sleep)
 	}
-	if err := bw.Flush(); err != nil {
+	if err := out.Close(); err != nil {
 		log.Fatal(err)
 	}
 }
