@@ -34,5 +34,8 @@ go.work.sum
 notes/curl.txt
 
 /leurisfetch
+/leurisreport
+/report.html
+/report.md
 *.jsonl
 *.jsonl.tmp
