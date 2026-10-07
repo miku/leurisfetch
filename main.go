@@ -19,6 +19,12 @@ import (
 
 const apiURL = "https://leuris.uni-leipzig.de/anchorwheel/api"
 
+// Queries are based on the ones the LEURIS portal sends, with additional
+// structured fields; see notes/schema.json for everything available.
+const fragments = `
+fragment person on Person { fisPersid fullName givenName surname orcid }
+fragment unit on OrganisationalUnit { id titleDe path }`
+
 const publicationQuery = `
 query fetchPublicationQuery(
   $id: ID!,
@@ -52,11 +58,22 @@ query fetchPublicationQuery(
           _entityName
           publikationsTyp:typeDe
           html { de en }
+          typeEn title year language
+          journal bookTitle seriesTitle volume issue pageStart pageEnd
+          publisher place issuingOrganisation
+          identifiers { type { key } value }
+          authors { ...person }
+          editors { ...person }
+          organisationalUnit { ...unit }
+          additionalOrganisationalUnits { ...unit }
+          fundingAgencies { id name }
+          project { id titleDe titleEn }
+          inProject validated link _createDate _updateDate
         }
       }
     }
   }
-}`
+}` + fragments
 
 const projectQuery = `
 query fetchResearchProjectQuery(
@@ -95,11 +112,22 @@ query fetchResearchProjectQuery(
           sdg { _id:id _stringRep }
           html { de en }
           publications_count
+          titleDe titleEn descriptionDe descriptionEn startDate endDate
+          isJointProject superordinateProject externalProjectWebsite
+          funding { fundingCode fundingAgency { id name } }
+          applicants { ...person }
+          collaborators { ...person }
+          managers { startDate endDate person { ...person } }
+          organisationalUnit { ...unit }
+          additionalOrganisationalUnits { ...unit }
+          spokespersonOu { id name city }
+          publications { id }
+          link _createDate _updateDate
         }
       }
     }
   }
-}`
+}` + fragments
 
 // kind describes one paginated collection we can fetch.
 type kind struct {
