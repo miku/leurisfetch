@@ -16,6 +16,14 @@ instead of HTML.
 * [HTML](https://miku.github.io/leurisfetch/)
 * [markdown](report.md)
 
+## Reproduce
+
+Local [Go](https://go.dev/) installation required.
+
+```
+$ go install github.com/miku/leurisfetch@latest
+```
+
 ## Deploy
 
 On git push, [report.html](report.html) get copied to branch
