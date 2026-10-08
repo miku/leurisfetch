@@ -28,9 +28,8 @@ func seriesCSS() template.CSS {
 		fmt.Fprintf(&classes, ".s%d{fill:var(--series-%[1]d)}.l%[1]d{stroke:var(--series-%[1]d)}.bg%[1]d{background:var(--series-%[1]d)}\n", i+1)
 	}
 	return template.CSS(fmt.Sprintf(`:root{%s}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){%s}}
-:root[data-theme="dark"]{%s}
-%s`, light.String(), dark.String(), dark.String(), classes.String()))
+:root:has(#theme:checked){%s}
+%s`, light.String(), dark.String(), classes.String()))
 }
 
 func renderHTML(w io.Writer, pg *page) error {
@@ -137,15 +136,8 @@ var pageTemplate = template.Must(template.New("page").Parse(`<!doctype html>
   --grid: #e1e0d9; --axis: #c3c2b7; --border: rgba(11,11,11,0.10); --hover: rgba(11,11,11,0.05);
   --mark-muted: #c3c2b7; --link: #1c5cab;
 }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    color-scheme: dark;
-    --page: #0d0d0d; --surface: #1a1a19; --ink: #ffffff; --ink-2: #c3c2b7; --muted: #898781;
-    --grid: #2c2c2a; --axis: #383835; --border: rgba(255,255,255,0.10); --hover: rgba(255,255,255,0.06);
-    --mark-muted: #52514e; --link: #86b6ef;
-  }
-}
-:root[data-theme="dark"] {
+/* Light by default; the "Dark mode" checkbox in the header switches, no script needed. */
+:root:has(#theme:checked) {
   color-scheme: dark;
   --page: #0d0d0d; --surface: #1a1a19; --ink: #ffffff; --ink-2: #c3c2b7; --muted: #898781;
   --grid: #2c2c2a; --axis: #383835; --border: rgba(255,255,255,0.10); --hover: rgba(255,255,255,0.06);
@@ -158,6 +150,9 @@ main { max-width: 1040px; margin: 0 auto; padding: 32px 16px 64px; }
 a { color: var(--link); text-decoration: none; }
 a:hover { text-decoration: underline; }
 h1 { font-size: 30px; line-height: 1.2; margin: 0 0 8px; letter-spacing: -0.01em; }
+.top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 4px 16px; }
+.theme { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--ink-2); cursor: pointer; user-select: none; }
+.theme input { margin: 0; accent-color: var(--link); cursor: pointer; }
 h2 { font-size: 22px; margin: 56px 0 8px; padding-top: 8px; border-top: 1px solid var(--grid); }
 h3 { font-size: 15px; margin: 0; }
 .anchor { margin-left: 0.3em; color: var(--muted); font-weight: 400; opacity: 0; }
@@ -246,7 +241,10 @@ footer p { max-width: 80ch; }
 <body>
 <main>
 <header>
+<div class="top">
 <h1>{{.Title}}</h1>
+<label class="theme"><input type="checkbox" id="theme"> Dark mode</label>
+</div>
 <p class="intro">{{.Intro.HTML}}</p>
 <nav>{{range .Sections}}<a href="#{{.ID}}">{{.Title}}</a>{{end}}</nav>
 </header>
