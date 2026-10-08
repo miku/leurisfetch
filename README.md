@@ -11,6 +11,8 @@ timeline, funding, publishing habits, people and curiosities. Run `leurisreport
 -h` for options; `-f md` (or an output file ending in `.md`) writes Markdown
 instead of HTML.
 
+[![](static/report-stacked-s.png)](https://miku.github.io/leurisfetch/)
+
 ## Report
 
 * [HTML](https://miku.github.io/leurisfetch/)
