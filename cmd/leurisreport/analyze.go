@@ -32,6 +32,7 @@ type section struct {
 
 // block is one figure: a chart, table, or set of cards.
 type block struct {
+	ID              string // set by assignIDs for titled blocks
 	Title, Subtitle string
 	Half            bool // half width on large screens
 	Figs            []figure
@@ -47,7 +48,7 @@ type card struct {
 }
 
 func build(d *data) *page {
-	return &page{
+	pg := &page{
 		Title:    "Research at Leipzig University",
 		Snapshot: date(d.snapshot),
 		Intro: h(`A portrait of research at Leipzig University, drawn from %s publications and %s research projects in %s, the university's research information system. Where the report says "now", it means the date of the snapshot, %s, the most recent update in the data.`,
@@ -62,6 +63,31 @@ func build(d *data) *page {
 			curiosities(d),
 		},
 		Notes: notes(d),
+	}
+	assignIDs(pg)
+	return pg
+}
+
+// assignIDs gives every titled block an ID derived from its title, unique
+// across the page, so it can be linked to.
+func assignIDs(pg *page) {
+	seen := make(map[string]bool)
+	for _, s := range pg.Sections {
+		seen[s.ID] = true
+	}
+	for i := range pg.Sections {
+		for j := range pg.Sections[i].Blocks {
+			b := &pg.Sections[i].Blocks[j]
+			if b.Title == "" {
+				continue
+			}
+			id := slug(b.Title)
+			for n := 2; id == "" || seen[id]; n++ {
+				id = fmt.Sprintf("%s-%d", slug(b.Title), n)
+			}
+			seen[id] = true
+			b.ID = id
+		}
 	}
 }
 

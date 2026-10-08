@@ -160,6 +160,12 @@ a:hover { text-decoration: underline; }
 h1 { font-size: 30px; line-height: 1.2; margin: 0 0 8px; letter-spacing: -0.01em; }
 h2 { font-size: 22px; margin: 56px 0 8px; padding-top: 8px; border-top: 1px solid var(--grid); }
 h3 { font-size: 15px; margin: 0; }
+.anchor { margin-left: 0.3em; color: var(--muted); font-weight: 400; opacity: 0; }
+h2:hover .anchor, h3:hover .anchor, .anchor:focus-visible { opacity: 1; }
+.anchor:hover { color: var(--link); text-decoration: none; }
+@media (hover: none) { .anchor { opacity: 1; } }
+.block { scroll-margin-top: 16px; }
+.block:target { border-color: var(--link); }
 .intro { color: var(--ink-2); max-width: 70ch; margin: 0 0 24px; }
 .lead { max-width: 75ch; color: var(--ink-2); }
 nav { display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 14px; margin: 0 0 24px; }
@@ -247,12 +253,12 @@ footer p { max-width: 80ch; }
 <div class="tiles">{{range .Tiles}}<div class="tile"><div class="label">{{.Label}}</div><div class="value">{{.Value}}</div><div class="note">{{.Note}}</div></div>{{end}}</div>
 {{range .Sections}}
 <section id="{{.ID}}">
-<h2>{{.Title}}</h2>
+<h2>{{.Title}}<a class="anchor" href="#{{.ID}}" aria-label="Link to this section">#</a></h2>
 {{range .Lead}}<p class="lead">{{.HTML}}</p>{{end}}
 {{if .Tiles}}<div class="tiles">{{range .Tiles}}<div class="tile"><div class="label">{{.Label}}</div><div class="value">{{.Value}}</div><div class="note">{{.Note}}</div></div>{{end}}</div>{{end}}
 <div class="blocks">
-{{range .Blocks}}<div class="block{{if .Half}} half{{end}}{{if and .Cards (not .Title)}} bare{{end}}">
-{{if .Title}}<h3>{{.Title}}</h3>{{end}}
+{{range .Blocks}}<div class="block{{if .Half}} half{{end}}{{if and .Cards (not .Title)}} bare{{end}}"{{with .ID}} id="{{.}}"{{end}}>
+{{if .Title}}<h3>{{.Title}}<a class="anchor" href="#{{.ID}}" aria-label="Link to this figure">#</a></h3>{{end}}
 {{if .Subtitle}}<p class="sub">{{.Subtitle}}</p>{{end}}
 {{range .Figs}}{{.HTML}}{{end}}
 {{if .Cards}}<div class="cards">{{range .Cards}}<div class="card"><div class="kicker">{{.Kicker}}</div><h3>{{.Title}}</h3>{{with .Body.HTML}}<p>{{.}}</p>{{end}}{{with .Spark}}{{.HTML}}{{end}}{{with .Note}}<span class="cardnote">{{.}}</span>{{end}}</div>{{end}}</div>{{end}}
