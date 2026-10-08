@@ -51,8 +51,8 @@ func build(d *data) *page {
 	pg := &page{
 		Title:    "Research at Leipzig University",
 		Snapshot: date(d.snapshot),
-		Intro: h(`A portrait of research at Leipzig University, drawn from %s publications and %s research projects in %s, the university's research information system. Where the report says "now", it means the date of the snapshot, %s, the most recent update in the data.`,
-			fmtInt(len(d.pubs)), fmtInt(len(d.projs)), link("https://leuris.uni-leipzig.de", "LEURIS"), date(d.snapshot)),
+		Intro: h(`A portrait of research at Leipzig University, drawn from %s publications and %s research projects in %s, the university's research information system (fetched with %s). Where the report says "now", it means the date of the snapshot, %s, the most recent update in the data.`,
+			fmtInt(len(d.pubs)), fmtInt(len(d.projs)), link("https://leuris.uni-leipzig.de", "LEURIS"), link("https://github.com/miku/leurisfetch", "leurisfetch"), date(d.snapshot)),
 		Tiles: overview(d),
 		Sections: []section{
 			timeline(d),
