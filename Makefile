@@ -13,7 +13,7 @@ leurisreport: $(wildcard cmd/leurisreport/*.go) go.mod go.sum
 # Data files only need the binary to exist (order-only), so a rebuild does not
 # trigger a refetch; a failed run leaves a tmp file, which the next run resumes.
 publications.jsonl: | leurisfetch
-	./leurisfetch -v -k publications -R $@.tmp && mv $@.tmp $@
+	./leurisfetch -w 100ms -v -k publications -R $@.tmp && mv $@.tmp $@
 
 projects.jsonl: | leurisfetch
 	./leurisfetch -v -k projects -R $@.tmp && mv $@.tmp $@

@@ -1,8 +1,8 @@
 # Research at Leipzig University
 
-A portrait of research at Leipzig University, drawn from 73,204 publications and 7,787 research projects in [LEURIS](https://leuris.uni-leipzig.de), the university's research information system. Where the report says "now", it means the date of the snapshot, 7 October 2026, the most recent update in the data.
+A portrait of research at Leipzig University, drawn from 73,205 publications and 7,787 research projects in [LEURIS](https://leuris.uni-leipzig.de), the university's research information system. Where the report says "now", it means the date of the snapshot, 7 October 2026, the most recent update in the data.
 
-- **Publications:** 73,204 (dated 1978 to 2026)
+- **Publications:** 73,205 (dated 1978 to 2026)
 - **Research projects:** 7,787 (412 running on the snapshot date)
 - **Researchers:** 11,964 (university members named as authors or project staff)
 - **Faculties and institutions:** 48 (947 organisational units in all)
@@ -75,7 +75,7 @@ Research projects follow a different curve. Starts peak in 2018 with 867 new pro
 | 2023 | 4,123 | ███████████████████████▎ |
 | 2024 | 4,568 | █████████████████████████▊ |
 | 2025 | 4,301 | ████████████████████████▎ |
-| 2026 (incomplete) | 612 | ███▌ |
+| 2026 (incomplete) | 613 | ███▌ |
 
 ### Projects started per year
 
@@ -226,7 +226,7 @@ Medicine dominates the record with 30% of all publications, ahead of History, Ar
 | --- | --- | ---: | ---: | ---: | --- | --- |
 | Medicine | 21,857 | 2,390 | 81% | 7 | ▂▂▂▂▂▂▃████▇▅▇█▆▇▇ | patients · cancer · treatment · clinical · disease · trial |
 | History, Arts & Area Studies | 5,851 | 525 | 29% | 1 | ▄▅▄▅▇▆▄█▆▆▇▆▆▇▆▅▆▅ | geschichte · rezension · jahrhundert · leipzig · japan · religion |
-| Social Sciences & Philosophy | 5,140 | 617 | 36% | 1 | ▄▄▄▄▄▄▃▆▆█▇▇▆▆▅▅▅▅ | communication · media · social · public · kommunikation · medien |
+| Social Sciences & Philosophy | 5,141 | 617 | 36% | 1 | ▄▄▄▄▄▄▃▆▆█▇▇▆▆▅▅▅▅ | communication · media · social · public · kommunikation · medien |
 | Philology | 4,987 | 459 | 29% | 1 | ▅▅▇▅▅▆▅██▇▇████▆▆▇ | language · literatur · deutsch · rezension · english · deutschen |
 | Physics & Earth System Sciences | 4,802 | 559 | 95% | 5 | ▅▅▅▄▄▅▂▆▆▇▆▆▇██▆▇▇ | quantum · thin films · properties · measurements · nmr · optical |
 | Life Sciences | 4,177 | 521 | 92% | 4 | ▄▄▄▄▅▅▂▇██▇█▅█▆▆▇▇ | processing · auditory · species · visual · attention · plant |
@@ -423,7 +423,7 @@ Teams grow, too. The average publication had 3.4 authors in 2008 and 8.8 in 2025
 | Journal article | 50,561 | ████████████████████████ |
 | Chapter in edited volume | 10,337 | ████▉ |
 | Conference paper | 3,823 | █▉ |
-| Monograph | 1,744 | ▉ |
+| Monograph | 1,745 | ▉ |
 | Miscellaneous | 1,742 | ▉ |
 | Edited volume | 1,510 | ▊ |
 | Chapter in book | 973 | ▌ |
@@ -753,7 +753,7 @@ Every large database has its oddities. Some of these are data entry slips, some 
 
 ---
 
-Source: the LEURIS GraphQL API of Leipzig University, fetched with leurisfetch for the whole university (organisational unit 1). Latest change in the data: 7 October 2026.
+Source: the LEURIS [GraphQL](https://leuris.uni-leipzig.de/anchorwheel/api) API ([docs](https://home.uni-leipzig.de/~leuriswiki/doku.php?id=leuris_portal_graphql)) of Leipzig University, fetched with leurisfetch for the whole university (organisational unit 1). Only publicly available data was used; the API requires no login. Latest change in the data: 7 October 2026.
 
 LEURIS shows what faculties and institutes enter. Coverage differs between units and over time, especially before the system went live in 2017, so counts describe the record, not necessarily the research output itself.
 
