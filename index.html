@@ -11,23 +11,15 @@
   --grid: #e1e0d9; --axis: #c3c2b7; --border: rgba(11,11,11,0.10); --hover: rgba(11,11,11,0.05);
   --mark-muted: #c3c2b7; --link: #1c5cab;
 }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    color-scheme: dark;
-    --page: #0d0d0d; --surface: #1a1a19; --ink: #ffffff; --ink-2: #c3c2b7; --muted: #898781;
-    --grid: #2c2c2a; --axis: #383835; --border: rgba(255,255,255,0.10); --hover: rgba(255,255,255,0.06);
-    --mark-muted: #52514e; --link: #86b6ef;
-  }
-}
-:root[data-theme="dark"] {
+ 
+:root:has(#theme:checked) {
   color-scheme: dark;
   --page: #0d0d0d; --surface: #1a1a19; --ink: #ffffff; --ink-2: #c3c2b7; --muted: #898781;
   --grid: #2c2c2a; --axis: #383835; --border: rgba(255,255,255,0.10); --hover: rgba(255,255,255,0.06);
   --mark-muted: #52514e; --link: #86b6ef;
 }
 :root{--series-1:#2a78d6;--series-2:#eb6834;--series-3:#1baf7a;--series-4:#eda100;--series-5:#e87ba4;--series-6:#008300;--series-7:#4a3aa7;--series-8:#e34948;}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--series-1:#3987e5;--series-2:#d95926;--series-3:#199e70;--series-4:#c98500;--series-5:#d55181;--series-6:#008300;--series-7:#9085e9;--series-8:#e66767;}}
-:root[data-theme="dark"]{--series-1:#3987e5;--series-2:#d95926;--series-3:#199e70;--series-4:#c98500;--series-5:#d55181;--series-6:#008300;--series-7:#9085e9;--series-8:#e66767;}
+:root:has(#theme:checked){--series-1:#3987e5;--series-2:#d95926;--series-3:#199e70;--series-4:#c98500;--series-5:#d55181;--series-6:#008300;--series-7:#9085e9;--series-8:#e66767;}
 .s1{fill:var(--series-1)}.l1{stroke:var(--series-1)}.bg1{background:var(--series-1)}
 .s2{fill:var(--series-2)}.l2{stroke:var(--series-2)}.bg2{background:var(--series-2)}
 .s3{fill:var(--series-3)}.l3{stroke:var(--series-3)}.bg3{background:var(--series-3)}
@@ -43,6 +35,9 @@ main { max-width: 1040px; margin: 0 auto; padding: 32px 16px 64px; }
 a { color: var(--link); text-decoration: none; }
 a:hover { text-decoration: underline; }
 h1 { font-size: 30px; line-height: 1.2; margin: 0 0 8px; letter-spacing: -0.01em; }
+.top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 4px 16px; }
+.theme { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--ink-2); cursor: pointer; user-select: none; }
+.theme input { margin: 0; accent-color: var(--link); cursor: pointer; }
 h2 { font-size: 22px; margin: 56px 0 8px; padding-top: 8px; border-top: 1px solid var(--grid); }
 h3 { font-size: 15px; margin: 0; }
 .anchor { margin-left: 0.3em; color: var(--muted); font-weight: 400; opacity: 0; }
@@ -131,7 +126,10 @@ footer p { max-width: 80ch; }
 <body>
 <main>
 <header>
+<div class="top">
 <h1>Research at Leipzig University</h1>
+<label class="theme"><input type="checkbox" id="theme"> Dark mode</label>
+</div>
 <p class="intro">A portrait of research at Leipzig University, drawn from 73,204 publications and 7,787 research projects in <a href="https://leuris.uni-leipzig.de">LEURIS</a>, the university's research information system. Where the report says "now", it means the date of the snapshot, 7 October 2026, the most recent update in the data.</p>
 <nav><a href="#timeline">Timeline</a><a href="#areas">Research areas</a><a href="#funding">Funding</a><a href="#publishing">How Leipzig publishes</a><a href="#people">People and collaboration</a><a href="#curiosities">Curiosities</a></nav>
 </header>
