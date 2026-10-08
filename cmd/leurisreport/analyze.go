@@ -1555,7 +1555,7 @@ func quoteList(xs []string, n int) string {
 
 func notes(d *data) []text {
 	return []text{
-		h(`Source: the LEURIS GraphQL API of Leipzig University, fetched with leurisfetch for the whole university (organisational unit 1). Latest change in the data: %s.`, date(d.snapshot)),
+		h(`Source: the LEURIS %s API (%s) of Leipzig University, fetched with leurisfetch for the whole university (organisational unit 1). Only publicly available data was used; the API requires no login. Latest change in the data: %s.`, link("https://leuris.uni-leipzig.de/anchorwheel/api", "GraphQL"), link("https://home.uni-leipzig.de/~leuriswiki/doku.php?id=leuris_portal_graphql", "docs"), date(d.snapshot)),
 		h(`LEURIS shows what faculties and institutes enter. Coverage differs between units and over time, especially before the system went live in 2017, so counts describe the record, not necessarily the research output itself.`),
 		h(`Dates are read in Europe/Berlin time, as the API stores local midnight in UTC. Areas are the faculty or central institution above a record's main organisational unit. Languages, journal titles and funder names are normalized; publication terms come from titles only.`),
 	}
