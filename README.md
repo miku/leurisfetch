@@ -18,10 +18,10 @@ instead of HTML.
 
 ## Reproduce
 
-Local [Go](https://go.dev/) installation required.
-
-```
-$ go install github.com/miku/leurisfetch@latest
+```shell
+$ git clone https://github.com/miku/leurisfetch.git
+$ cd leurisfetch
+$ make data report
 ```
 
 ## Deploy
