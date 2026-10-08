@@ -1,6 +1,6 @@
 # Research at Leipzig University
 
-A portrait of research at Leipzig University, drawn from 73,205 publications and 7,787 research projects in [LEURIS](https://leuris.uni-leipzig.de), the university's research information system. Where the report says "now", it means the date of the snapshot, 7 October 2026, the most recent update in the data.
+A portrait of research at Leipzig University, drawn from 73,205 publications and 7,787 research projects in [LEURIS](https://leuris.uni-leipzig.de), the university's research information system (fetched with [leurisfetch](https://github.com/miku/leurisfetch)). Where the report says "now", it means the date of the snapshot, 7 October 2026, the most recent update in the data.
 
 - **Publications:** 73,205 (dated 1978 to 2026)
 - **Research projects:** 7,787 (412 running on the snapshot date)
