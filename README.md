@@ -3,7 +3,7 @@
 Fetch data from [LEURIS](https://leuris.uni-leipzig.de/),
 [docs](https://home.uni-leipzig.de/~leuriswiki/doku.php?id=start)
 
-    $ make data      # fetch publications.jsonl and projects.jsonl; takes a while
+    $ make data      # fetch publications.jsonl (200MB+) and projects.jsonl; takes a while
     $ make report    # write report.html and report.md; 5s
 
 [The report](https://miku.github.io/leurisfetch/) covers research areas, a
