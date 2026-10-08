@@ -11,7 +11,7 @@ A portrait of research at Leipzig University, drawn from 73,204 publications and
 - **In English:** 77% (of 2025 publications with a known language)
 - **Funding bodies:** 29 (5,882 projects name a funder)
 
-Contents: [Timeline](#timeline) · [Research areas](#research-areas) · [Funding](#funding) · [How Leipzig publishes](#how-leipzig-publishes) · [People and collaboration](#people-and-collaboration) · [Curiosities](#curiosities)
+Contents: [Timeline](#timeline) · [Research areas](#research-areas) · [Funding](#funding) · [How Leipzig publishes](#how-leipzig-publishes) · [Data and software](#data-and-software) · [People and collaboration](#people-and-collaboration) · [Curiosities](#curiosities)
 
 ## Timeline
 
@@ -564,6 +564,89 @@ With DOI 2000–2025: `▂▃▄▅▅▅▅▅▅▅▅▅▅▅▅▆▆▇▆
 | 2023 | 66% |
 | 2024 | 76% |
 | 2025 | 77% |
+
+
+## Data and software
+
+LEURIS has no publication type for research data or software. The few records of either are filed under other types, 34 as Miscellaneous and 1 as Working paper. Titles and DOIs give away 24 datasets, 6 corpora and 5 pieces of software or hardware: 35 records, about one in 2,100 publications.
+
+Most are recent, with 31 of the 35 dating from 2021 or later, and they come from few places: Physics & Earth System Sciences (14), Philology (10), Life Sciences (4). 21 name a repository: PANGAEA (15), Zenodo (6).
+
+### Data and software per year
+
+*Records by year of publication, 2002–2026; 2026 is not complete yet*
+
+| Year | Records |  |
+| --- | ---: | --- |
+| 2002 | 1 | ███ |
+| 2003 | 0 |  |
+| 2004 | 0 |  |
+| 2005 | 0 |  |
+| 2006 | 0 |  |
+| 2007 | 0 |  |
+| 2008 | 1 | ███ |
+| 2009 | 0 |  |
+| 2010 | 0 |  |
+| 2011 | 0 |  |
+| 2012 | 0 |  |
+| 2013 | 0 |  |
+| 2014 | 0 |  |
+| 2015 | 0 |  |
+| 2016 | 1 | ███ |
+| 2017 | 1 | ███ |
+| 2018 | 0 |  |
+| 2019 | 0 |  |
+| 2020 | 0 |  |
+| 2021 | 6 | ██████████████████ |
+| 2022 | 1 | ███ |
+| 2023 | 3 | █████████ |
+| 2024 | 8 | ████████████████████████ |
+| 2025 | 10 | ██████████████████████████████ |
+| 2026 (incomplete) | 3 | █████████ |
+
+### All records
+
+*Newest first*
+
+| Year | Title | Kind | Area | Repository |
+| ---: | --- | --- | --- | --- |
+| 2026 | [Background data for: The morpho-syntax of Scottish Standard English: Questionnaire-based insights](https://leuris.uni-leipzig.de/portal/details/publikation/80693) | Dataset | Philology | – |
+| 2026 | [Supporting Data for: Investigating the covariation of features in ‘crowded’ vowel spaces – A…](https://leuris.uni-leipzig.de/portal/details/publikation/80695) | Dataset | Philology | – |
+| 2026 | [Supporting data for: Incipient vowel splits in Standard Scottish English](https://leuris.uni-leipzig.de/portal/details/publikation/80694) | Dataset | Philology | – |
+| 2025 | [CHILDES English-German MPI-EVA-Leipzig Corpus.](https://leuris.uni-leipzig.de/portal/details/publikation/75631) | Corpus | Philology | – |
+| 2025 | [Five years of monitoring sooty bark disease (Cryptostroma corticale) on sycamore maple (Acer…](https://leuris.uni-leipzig.de/portal/details/publikation/79620) | Dataset | Life Sciences | PANGAEA |
+| 2025 | [Geophysical, Sedimentological and Geochemical Data from the Lower Havel Inner Delta (Gülpe Island)…](https://leuris.uni-leipzig.de/portal/details/publikation/75769) | Dataset | Physics & Earth System Sciences | PANGAEA |
+| 2025 | [Historical mapping of canals and ditches and the Danube surface water area in the Greater Donaumoos…](https://leuris.uni-leipzig.de/portal/details/publikation/75101) | Dataset | Physics & Earth System Sciences | PANGAEA |
+| 2025 | [KOMPASS\_2\_Studie (Dataset)](https://leuris.uni-leipzig.de/portal/details/publikation/74611) | Dataset | Sport Science | – |
+| 2025 | [Nine years of monitoring ash dieback in the floodplain forest of Leipzig, Germany \[dataset\]](https://leuris.uni-leipzig.de/portal/details/publikation/79618) | Dataset | Life Sciences | PANGAEA |
+| 2025 | [Video In Situ Snowfall Sensor (VISSS) data for Eriswil (2023-2024)](https://leuris.uni-leipzig.de/portal/details/publikation/76028) | Dataset | Physics & Earth System Sciences | PANGAEA |
+| 2025 | [Video In Situ Snowfall Sensor (VISSS) data for Hyytiälä (December 2023 - July 2024)](https://leuris.uni-leipzig.de/portal/details/publikation/76030) | Dataset | Physics & Earth System Sciences | PANGAEA |
+| 2025 | [Video In Situ Snowfall Sensor (VISSS) data for Ny-Ålesund (January 2024 - December 2024)](https://leuris.uni-leipzig.de/portal/details/publikation/76029) | Dataset | Physics & Earth System Sciences | PANGAEA |
+| 2025 | [mlts: Multilevel Latent Time Series Models with 'R' and 'Stan'](https://leuris.uni-leipzig.de/portal/details/publikation/79201) | Software & tools | Life Sciences | – |
+| 2024 | [Ahr river overbank sediments: XRF elemental composition data set (Mayschoß-Transect, core…](https://leuris.uni-leipzig.de/portal/details/publikation/75132) | Dataset | Physics & Earth System Sciences | PANGAEA |
+| 2024 | [Ahr river overbank sediments: grain sizes, carbonates and soil organic parameters…](https://leuris.uni-leipzig.de/portal/details/publikation/75131) | Dataset | Physics & Earth System Sciences | PANGAEA |
+| 2024 | [EmotionTool (ET1.0)](https://leuris.uni-leipzig.de/portal/details/publikation/66150) | Software & tools | Education | Zenodo |
+| 2024 | [Hardware design of the Video In Situ Snowfall Sensor v3 (VISSS3)](https://leuris.uni-leipzig.de/portal/details/publikation/74088) | Software & tools | Physics & Earth System Sciences | Zenodo |
+| 2024 | [RUEG Corpus V. 1.0. (Korpus)](https://leuris.uni-leipzig.de/portal/details/publikation/79971) | Corpus | Philology | Zenodo |
+| 2024 | [Tree inventory dataset of floodplain forest, Leipzig, Germany \[dataset\]](https://leuris.uni-leipzig.de/portal/details/publikation/79617) | Dataset | Life Sciences | PANGAEA |
+| 2024 | [VISSS Raw data from SAIL at Gothic from November 2022 to June 2023](https://leuris.uni-leipzig.de/portal/details/publikation/74089) | Dataset | Physics & Earth System Sciences | – |
+| 2024 | [Video In Situ Snowfall Sensor (VISSS) data for Ny-Ålesund (July 2022 - December 2023)](https://leuris.uni-leipzig.de/portal/details/publikation/74087) | Dataset | Physics & Earth System Sciences | PANGAEA |
+| 2023 | [Dataset for: A novel, scenario-based approach to comparing non-pharmaceutical intervention…](https://leuris.uni-leipzig.de/portal/details/publikation/64724) | Dataset | Economics & Management | – |
+| 2023 | [Korpusdokumentation des SiGS-Korpus der Hexenverhörprotokolle](https://leuris.uni-leipzig.de/portal/details/publikation/65066) | Corpus | Philology | – |
+| 2023 | [The Spatial Organization of Theatrical Entertainment. Data Sets from German Trade Publications…](https://leuris.uni-leipzig.de/portal/details/publikation/59279) | Dataset | ReCentGlobe – Global Dynamics | – |
+| 2022 | [FALKO. Eine Familie vielseitig annotierter Lernerkorpora des Deutschen als Fremdsprache (Korpus)](https://leuris.uni-leipzig.de/portal/details/publikation/79955) | Corpus | Philology | – |
+| 2021 | [BVerfGE-Korpus (Korpus)](https://leuris.uni-leipzig.de/portal/details/publikation/79972) | Corpus | Philology | Zenodo |
+| 2021 | [Detailed lithological descriptions of recovered cores from the Loosbach valley at Pestenacker, a…](https://leuris.uni-leipzig.de/portal/details/publikation/47591) | Dataset | Physics & Earth System Sciences | PANGAEA |
+| 2021 | [Direct Push Electrical Conductivity Sensing in the Loosbach valley at Pestenacker, a Late Neolithic…](https://leuris.uni-leipzig.de/portal/details/publikation/47593) | Dataset | Physics & Earth System Sciences | PANGAEA |
+| 2021 | [Direct Push Sensing with the Soil Optical Color Screening Tool in the Loosbach valley at…](https://leuris.uni-leipzig.de/portal/details/publikation/47592) | Dataset | Physics & Earth System Sciences | PANGAEA |
+| 2021 | [Geochemical data of recovered cores from the Loosbach valley at Pestenacker, a Late Neolithic…](https://leuris.uni-leipzig.de/portal/details/publikation/47590) | Dataset | Physics & Earth System Sciences | PANGAEA |
+| 2021 | [Kobalt: Extension Corpus and Annotation Guidelines for Verb Classification and Dependency…](https://leuris.uni-leipzig.de/portal/details/publikation/79973) | Corpus | Philology | Zenodo |
+| 2017 | [Tokenized and sentence-splitted CTSized Ancient Greek texts v1.1.0 \[Data set\]…](https://leuris.uni-leipzig.de/portal/details/publikation/15068) | Dataset | Mathematics & Computer Science | – |
+| 2016 | [Mitgliederzahlen und Chorleiter des Leipziger Opernchors 1817–1917 \[Datensatz\]](https://leuris.uni-leipzig.de/portal/details/publikation/7328) | Dataset | History, Arts & Area Studies | Zenodo |
+| 2008 | [Russisch aktuell - erklärt, geübt, beherrscht. Das russische Universalwörterbuch auf DVD (Version…](https://leuris.uni-leipzig.de/portal/details/publikation/38350) | Software & tools | Philology | – |
+| 2002 | [Film- und Fernsehästhetik in Theorie und Praxis. Multimediale Lehr- und Selbstlernsoftware](https://leuris.uni-leipzig.de/portal/details/publikation/44180) | Software & tools | Social Sciences & Philosophy | – |
+
+Found among publications typed Miscellaneous or Working paper, by labels in the title such as “[dataset]”, “(Korpus)” or “Supporting data for”, by named corpora, by words such as “Lernsoftware” or “R package”, by version numbers, and by DOIs from data repositories (PANGAEA, Dryad, Mendeley Data, Harvard Dataverse). Data and software without such a label are missed, so the counts are a lower bound.
 
 
 ## People and collaboration
