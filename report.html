@@ -35,9 +35,14 @@ main { max-width: 1040px; margin: 0 auto; padding: 32px 16px 64px; }
 a { color: var(--link); text-decoration: none; }
 a:hover { text-decoration: underline; }
 h1 { font-size: 30px; line-height: 1.2; margin: 0 0 8px; letter-spacing: -0.01em; }
-.top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 4px 16px; }
-.theme { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--ink-2); cursor: pointer; user-select: none; }
-.theme input { margin: 0; accent-color: var(--link); cursor: pointer; }
+.top { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin: 0 0 8px; }
+.top h1 { margin: 0; }
+.theme { flex: none; margin-top: 2px; position: relative; display: inline-grid; place-items: center; width: 32px; height: 32px; border-radius: 6px; color: var(--ink-2); cursor: pointer; }
+.theme:hover { background: var(--hover); color: var(--ink); }
+.theme:has(input:focus-visible) { outline: 2px solid var(--link); outline-offset: 2px; }
+.theme input { position: absolute; inset: 0; margin: 0; opacity: 0; cursor: pointer; }
+.theme svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+#theme:checked ~ .moon, #theme:not(:checked) ~ .sun { display: none; }
 h2 { font-size: 22px; margin: 56px 0 8px; padding-top: 8px; border-top: 1px solid var(--grid); }
 h3 { font-size: 15px; margin: 0; }
 .anchor { margin-left: 0.3em; color: var(--muted); font-weight: 400; opacity: 0; }
@@ -128,7 +133,10 @@ footer p { max-width: 80ch; }
 <header>
 <div class="top">
 <h1>Research at Leipzig University</h1>
-<label class="theme"><input type="checkbox" id="theme"> Dark mode</label>
+<label class="theme" title="Dark mode"><input type="checkbox" id="theme" aria-label="Dark mode">
+<svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+<svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+</label>
 </div>
 <p class="intro">A portrait of research at Leipzig University, drawn from 73,205 publications and 7,787 research projects in <a href="https://leuris.uni-leipzig.de">LEURIS</a>, the university's research information system. Where the report says "now", it means the date of the snapshot, 7 October 2026, the most recent update in the data.</p>
 <nav><a href="#timeline">Timeline</a><a href="#areas">Research areas</a><a href="#funding">Funding</a><a href="#publishing">How Leipzig publishes</a><a href="#data">Data and software</a><a href="#people">People and collaboration</a><a href="#curiosities">Curiosities</a></nav>
