@@ -1,0 +1,41 @@
+# Publish report.html from the repository root as index.html on the gh-pages
+# branch, which GitHub Pages serves.
+name: Deploy report
+
+on:
+  push:
+    branches: [main]
+    paths: [report.html]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: gh-pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          path: src
+      - uses: actions/checkout@v5
+        with:
+          ref: gh-pages
+          path: site
+      - name: Commit report as index.html
+        working-directory: site
+        run: |
+          cp ../src/report.html index.html
+          git add index.html
+          if git diff --cached --quiet; then
+            echo "index.html is unchanged"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Deploy report.html from ${GITHUB_SHA::7}"
+          git push
