@@ -59,6 +59,7 @@ func build(d *data) *page {
 			researchAreas(d),
 			fundingSection(d),
 			publishing(d),
+			dataSoftware(d),
 			people(d),
 			curiosities(d),
 		},
@@ -1004,6 +1005,180 @@ func publishing(d *data) section {
 			Title:    "Publications with a DOI",
 			Subtitle: fmt.Sprintf("Share of publications with a DOI recorded in LEURIS, %d–%d", from, d.lastFull),
 			Figs:     []figure{lineFig{"Share of publications with a DOI", "Year", xs, []series{{"With DOI", doiS}}, true, pctFmt}},
+		})
+	return s
+}
+
+// dataKinds recognize research data and software by their titles, tried in
+// order. LEURIS has no publication type for either.
+var dataKinds = []struct {
+	kind string
+	re   *regexp.Regexp
+}{
+	// Labelled as data, or "Supporting data for: ...".
+	{"Dataset", regexp.MustCompile(`(?i)[\[(](data ?sets?|datensatz)[\])]|^(supporting |background |raw )?data(set)? for\b|\bdata ?sets? from\b|\braw data\b`)},
+	// Labelled as a corpus, or the name of one, as in "CHILDES ... Corpus" or
+	// "SiGS-Korpus", but not "Dogs in the courtroom – some thoughts on the Old
+	// Bailey Corpus".
+	{"Corpus", regexp.MustCompile(`(?i:[\[(](korpus|corpus)[\])])|^[^–]*(\bCorpus\.?$|-(Korpus|Corpus)\b)`)},
+	// Labelled as software, a kind of software ("Lernsoftware"), an R package,
+	// a hardware design, or a name with a version number in parentheses, as in
+	// "EmotionTool (ET1.0)".
+	{"Software & tools", regexp.MustCompile(`(?i)\w+software\b|[\[(]software[\])]|\bR package\b|'R'|\bhardware design\b|\((version |v)?[a-z]*\d+(\.\d+)+\)`)},
+}
+
+// corpusRe finds a corpus mentioned anywhere in a title, which is enough for
+// records in a repository.
+var corpusRe = regexp.MustCompile(`(?i)\b(corpus|korpus)\b`)
+
+// repositories are matched against identifiers; data repositories hold
+// nothing but data.
+var repositories = []struct {
+	match, name string
+	data        bool
+}{
+	{"10.1594/pangaea.", "PANGAEA", true},
+	{"10.5061/dryad.", "Dryad", true},
+	{"10.17632/", "Mendeley Data", true},
+	{"10.7910/dvn/", "Harvard Dataverse", true},
+	{"10.5281/zenodo.", "Zenodo", false},
+	{"zenodo.org/", "Zenodo", false},
+	{"10.6084/m9.figshare.", "figshare", false},
+	{"github.com/", "GitHub", false},
+}
+
+// repository returns where a publication is deposited, if anywhere known.
+func repository(p *publication) (name string, data bool) {
+	for _, id := range p.Identifiers {
+		v := strings.ToLower(id.Value)
+		for _, r := range repositories {
+			if strings.Contains(v, r.match) {
+				return r.name, r.data
+			}
+		}
+	}
+	return "", false
+}
+
+// dataKind returns the kind of data or software a publication is, or "".
+// Only the catch-all types are considered, where such records end up.
+func dataKind(p *publication) string {
+	if p.Type != "MISC" && p.Type != "WORKING_PAPER" {
+		return ""
+	}
+	t := strings.Join(strings.Fields(p.Title), " ")
+	for _, k := range dataKinds {
+		if k.re.MatchString(t) {
+			return k.kind
+		}
+	}
+	repo, data := repository(p)
+	switch {
+	case data:
+		return "Dataset"
+	case repo != "" && corpusRe.MatchString(t):
+		return "Corpus"
+	}
+	return ""
+}
+
+func dataSoftware(d *data) section {
+	s := section{ID: "data", Title: "Data and software"}
+	type record struct {
+		p          *publication
+		kind, repo string
+	}
+	var (
+		recs    []record
+		kinds   = make(counter)
+		areas   = make(counter)
+		repos   = make(counter)
+		perYear = make(map[int]int)
+		misc    int
+		recent  int
+		since   = d.snapshot.Year() - 5
+		first   = d.snapshot.Year()
+	)
+	for _, p := range d.pubs {
+		k := dataKind(p)
+		if k == "" {
+			continue
+		}
+		repo, _ := repository(p)
+		recs = append(recs, record{p, k, repo})
+		kinds[k]++
+		areas[d.areaName(p.area)]++
+		if repo != "" {
+			repos[repo]++
+		}
+		if p.Type == "MISC" {
+			misc++
+		}
+		if p.Year > 0 {
+			perYear[p.Year]++
+			first = min(first, p.Year)
+		}
+		if p.Year >= since {
+			recent++
+		}
+	}
+	if len(recs) == 0 {
+		s.Lead = append(s.Lead, h(`LEURIS has no publication type for research data or software, and no records of either turn up among the publications.`))
+		return s
+	}
+	filed := fmt.Sprintf("%d as Miscellaneous and %d as Working paper", misc, len(recs)-misc)
+	if misc == len(recs) {
+		filed = "all of them as Miscellaneous"
+	}
+	var most string
+	switch share := float64(recent) / float64(len(recs)); {
+	case share >= 0.9:
+		most = "Nearly all"
+	case share >= 0.5:
+		most = "Most"
+	default:
+		most = "Some"
+	}
+	var top []string
+	for _, kv := range areas.top(3) {
+		top = append(top, fmt.Sprintf("%s (%d)", kv.Key, kv.N))
+	}
+	var deposited []string
+	for _, kv := range repos.top(0) {
+		deposited = append(deposited, fmt.Sprintf("%s (%d)", kv.Key, kv.N))
+	}
+	s.Lead = append(s.Lead,
+		h(`LEURIS has no publication type for research data or software. The few records of either are filed under other types, %s. Titles and DOIs give away %s, %s and %s: %s records, about one in %s publications.`,
+			filed, plural(kinds["Dataset"], "dataset", "datasets"), plural(kinds["Corpus"], "corpus", "corpora"),
+			plural(kinds["Software & tools"], "piece of software or hardware", "pieces of software or hardware"),
+			fmtInt(len(recs)), fmtInt(int(math.Round(float64(len(d.pubs))/float64(len(recs))/100))*100)),
+		h(`%s are recent, with %d of the %d dating from %d or later, and they come from few places: %s. %d name a repository: %s.`,
+			most, recent, len(recs), since, strings.Join(top, ", "), repos.total(), strings.Join(deposited, ", ")))
+
+	var bars []bar
+	for y := first; y <= d.snapshot.Year(); y++ {
+		n := perYear[y]
+		b := bar{X: strconv.Itoa(y), Tick: y%5 == 0, Value: float64(n), Tip: fmt.Sprintf("%d: %s", y, plural(n, "record", "records")), Muted: y > d.lastFull}
+		if b.Muted {
+			b.Tip += " so far"
+		}
+		bars = append(bars, b)
+	}
+	slices.SortFunc(recs, func(a, b record) int {
+		return cmp.Or(cmp.Compare(b.p.Year, a.p.Year), cmp.Compare(a.p.Title, b.p.Title))
+	})
+	var rows [][]any
+	for _, r := range recs {
+		rows = append(rows, []any{strconv.Itoa(r.p.Year), link(r.p.Link, shorten(r.p.Title, 100)), r.kind, d.areaName(r.p.area), cmp.Or(r.repo, "–")})
+	}
+	s.Blocks = append(s.Blocks,
+		block{Title: "Data and software per year", Subtitle: fmt.Sprintf("Records by year of publication, %d–%d; %d is not complete yet", first, d.snapshot.Year(), d.snapshot.Year()),
+			Figs: []figure{columnFig{"Data and software records per year", "Year", "Records", bars}}},
+		block{
+			Title:    "All records",
+			Subtitle: "Newest first",
+			Figs:     []figure{tableFig{[]string{"Year", "Title", "Kind", "Area", "Repository"}, rows}},
+			Notes: []text{h(`Found among publications typed Miscellaneous or Working paper, by labels in the title such as “[dataset]”, “(Korpus)” or “Supporting data for”, by named corpora, by words such as “Lernsoftware” or “R package”, by version numbers, and by DOIs from data repositories (PANGAEA, Dryad, Mendeley Data, Harvard Dataverse). Data and software without such a label are missed, so the counts are a lower bound.`)},
 		})
 	return s
 }

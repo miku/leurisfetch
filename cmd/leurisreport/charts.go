@@ -40,9 +40,11 @@ type frame struct {
 	b                    strings.Builder
 }
 
-func newFrame(h, ml, mr, maxv float64, pct bool) *frame {
+// newFrame returns a frame for values up to maxv; whole keeps the ticks on
+// whole numbers, for counts.
+func newFrame(h, ml, mr, maxv float64, pct, whole bool) *frame {
 	f := &frame{w: svgW, h: h, ml: ml, mr: mr, mt: 10, mb: 24, pct: pct}
-	f.ticks = niceTicks(maxv, 4)
+	f.ticks = niceTicks(maxv, 4, whole)
 	return f
 }
 
@@ -77,14 +79,20 @@ func (f *frame) close() template.HTML {
 }
 
 // niceTicks returns evenly spaced round ticks from zero to at least maxv.
-func niceTicks(maxv float64, n int) []float64 {
+func niceTicks(maxv float64, n int, whole bool) []float64 {
 	if !(maxv > 0) {
 		maxv = 1
 	}
 	raw := maxv / float64(n)
 	mag := math.Pow(10, math.Floor(math.Log10(raw)))
 	step := 10 * mag
+	if whole {
+		step = max(step, 1)
+	}
 	for _, m := range []float64{1, 2, 2.5, 5} {
+		if whole && m*mag != math.Trunc(m*mag) {
+			continue
+		}
 		if m*mag >= raw {
 			step = m * mag
 			break
@@ -123,7 +131,7 @@ func columnChart(label string, bars []bar) template.HTML {
 	for _, b := range bars {
 		maxv = max(maxv, b.Value)
 	}
-	f := newFrame(240, 48, 8, maxv, false)
+	f := newFrame(240, 48, 8, maxv, false, true)
 	f.open(label)
 	band := f.pw() / float64(len(bars))
 	bw := min(24, band*0.7)
@@ -158,7 +166,7 @@ func lineChart(label string, xs []string, ss []series, pct bool, every int, form
 			}
 		}
 	}
-	f := newFrame(240, 48, 52, maxv, pct)
+	f := newFrame(240, 48, 52, maxv, pct, false)
 	if pct && f.top() > 1 {
 		f.ticks = []float64{0, .25, .5, .75, 1}
 	}
@@ -229,7 +237,7 @@ func lineChart(label string, xs []string, ss []series, pct bool, every int, form
 // stackChart draws 100% stacked columns, one segment per series, separated
 // by a 2px surface gap.
 func stackChart(label string, xs []string, ss []series, every int, unit string) template.HTML {
-	f := newFrame(260, 48, 8, 1, true)
+	f := newFrame(260, 48, 8, 1, true, false)
 	f.ticks = []float64{0, .25, .5, .75, 1}
 	f.open(label)
 	band := f.pw() / float64(len(xs))
